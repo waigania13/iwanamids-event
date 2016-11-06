@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>岩波データサイエンスVol.4 トークイベント</title>
+
+		<meta name="description" content="岩波データサイエンスVol.4">
+		<meta name="author" content="Kosuke ASAHI">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<style type="text/css">
+			div { background-color: rgba(256,256,256,0.8);}
+		</style>
+		
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background="img/mierune2.png">
+					<h1>地理空間情報入門</h1>
+                                        <p>合同会社MIERUNE</p>
+                                        <p>朝日 孝輔</p>
+				</section>
+				
+				<section>
+					<section data-background="img/mierune3.png">
+						<h2>ABOUT ME</h2>
+						<p>
+						<h3>朝日 孝輔</h3>
+						</p>
+						<p>合同会社MIERUNE<br>
+						(一社)社会基盤情報流通推進協議会<br>
+						OSGeo財団日本支部 監事<br>
+						</p>
+					</section>
+					<section data-background="img/mierune6.png">
+						<h2>合同会社MIERUNE</h2>
+						<p>
+						IT・地理空間情報のコンサルタント<br>
+						データの有効活用を通して課題の解決に貢献しています
+						</p>
+						<p>
+						<ul>
+						<li>業務改善・開発のコンサルティング</li>
+						<li>研修・講演会の企画運営</li>
+						<li>ソフトウェアの企画・研究・開発</li>
+                   				<li>データベースの企画構築解析</li>
+						</ul>
+						</p>
+					</section>
+					<section data-background="img/mierune1.png">
+						<h2>岩波DS Vol.4</h2>
+						<h3>下記に関わらせていただきました</h3>
+						<ul>
+						<li>地理空間情報入門</li>
+						<li>RとGISの連携</li>
+						<li>WebGISの動向</li>
+						</ul>
+						<img src="img/iwanami.png">
+					</section>
+				</section>
+				
+				<section data-background="img/mierune1.png">
+					<section>
+						<h2>地理空間情報</h2>
+						<p>
+						位置の情報、もしくは位置+位置と結びついた情報
+						<img src="img/muroran.png">
+						</p>
+					</section>
+					<section data-background-iframe="https://bouhan-tokyo.maps.arcgis.com/apps/MapSeries/index.html?appid=2945e6613afa469baef87f60aea5208c">
+						<h2>地理空間情報の例</h2>
+						<p>
+						<a href="http://www.bouhan.metro.tokyo.jp/" target="new">大東京防犯ネットワーク</a><br>
+						先週リニューアルオープンしたようなので見てみましょう
+						</p>
+					</section>
+					<section>
+						<h2>地理空間情報の例</h2>
+						<p>
+						ユーザーの位置情報と、ポケストップ、ジム、ポケモンの出現位置を結びつけている(はず)
+						</p>
+						<p>
+						<img src="img/pokemon.png" width="50%">
+						</p>
+					</section>
+					<section>
+						<h2>こんな位置的な処理が<br>行われているはず</h2>
+						<p>
+						<ul>
+						<li>端末で、ユーザーの位置を測位<font color="red">←緯度経度</font></li>
+						<li>端末から、サーバへ位置を送信</li>
+						<li>サーバで、端末に返す範囲<font color="red">←何mがうれしい</font><br>
+						 のポケストップ等計算</li>
+						<li>端末で、ポケストップ等を表示</li>
+						</ul>
+						</p>
+					</section>
+					<section>
+						<h2>こんな位置的な処理が<br>行われているはず</h2>
+						<p>
+						<ul>
+						<li>絶対的な位置が欲しい</li>
+						<ul><li>緯度経度</li><li>どこかを原点とした位置</li><li>住所</li></ul>
+						<li>2地点の相対的な位置関係</li>
+						<ul><li>緯度経度差</li><li>どこかを原点とした位置差</li><li>方位</li></ul>
+						</p>
+					</section>
+					<section>
+						<h2>同緯度経度は必ず同じ位置か？</h2>
+						<p>
+						地球を近似した楕円体が同じならね
+						<img src="img/latlng.jpg" width="70%">
+						</p>
+					</section>
+					<section>
+						<h2>同緯度経度は必ず同じ位置か？</h2>
+						<p>
+						いまどきはWGS84楕円体で同じだから大丈夫<br>
+						<font color="red">古いのは気をつけよう</font>
+						</p>
+					</section>
+					<section>
+						<h2>平面で考えよう</h2>
+						<p>
+						緯度経度で平面に書いてみた
+						<img src="img/world1.png">
+						</p>
+					</section>
+					<section>
+						<h2>平面で考えよう</h2>
+						<p>
+						見慣れてるのはこれのはず<br>
+						メルカトル図法、角度が正しい
+						<img src="img/world2.png" width="50%">
+						</p>
+					</section>
+					<section>
+						<h2>平面で考えよう</h2>
+						<p>
+						何を正しく表すかを考慮して平面に投影<br>
+						例えば円筒をかぶせて、接する一定範囲だけ採用
+						<img src="img/latlng2.jpg" width="60%"><br>
+						投影法の原点からの距離で座標を持たせる
+						</p>
+					</section>
+					<section>
+						<h2>大事なこと</h2>
+						<p>
+						<ul>
+						<li>どの範囲・縮尺で何を正確に求めたいの?</li>
+						<li>もらったデータの座標は何？精度は？</li>
+						</ul>
+						</p>
+					</section>
+				</section>
+
+				<section data-background-iframe="http://qgis.org">
+					<section>
+						<h2>QGIS</h2>
+						<p>
+						<a href="http://qgis.org" target="new">http://qgis.org/</a>
+						</p>
+					</section>
+					<section>
+						<h2>QGIS</h2>
+						<p>
+						<ul>
+						<li>地理情報システム</li>
+						<li>データの作成・編集・可視化・解析</li>
+						<li>オープンソースで誰でも使えます</li>
+						<li>WindowsでもMacでもLinuxでも使えます</li>
+						</ul>
+						</p>
+					</section>
+				</section>
+
+				<section data-background-iframe="https://carto.com">
+					<section>
+						<h2>CARTO</h2>
+						<p>
+						<a href="https://carto.com/" target="new">https://carto.com/</a>
+						</p>
+					</section>
+					<section>
+						<h2>CARTO</h2>
+						<p>
+						地図を使ったアプリケーションを作成するためのプラットホーム
+						</p>
+						<p>
+						<ul>
+						<li>CARTOにデータをアップロードして、さまざまな表現を付けられます</li>
+						<li>データの編集もCARTO上で行えます</li>
+						<li>データをどのように表示・表現すべきか提案してくれたります</li>
+						<li>作成した地図を公開できます</li>
+						<li>APIを通して作成したデータを使用できます</li>
+						</ul>
+						</p>
+					</section>
+					<section data-background="img/cartodb1.png">
+						<p>
+						ユーザ登録してDATASETを作成します<br>
+						手持ちのshapefile、csv、geojson、kmlなどがあればアップロードできます<br>
+						位置情報を持っている必要はあります
+						</p>
+						<p>
+						もしくは空のDATASETを作成して、オブジェクトを追加して行きます
+						</p>
+					</section>
+					<section data-background="img/cartodb2.png">
+						<p>
+						MAPVIEWでデータを地図上に展開できます<br>
+						用意されている背景地図を選択できます<br>
+						タイル地図ならURLを指定して背景に指定もできます<br>
+						Map Layer Wizardで簡単にDATASETの表現付もできます
+						</p>
+					</section>
+					<section data-background="img/cartodb3.png">
+						<p>
+						MAPをPUBLISHすると<br>
+						地図をシェアするためのURL<br>
+						サイトに組み込むためのコードが発行されます
+						</p>
+					</section>
+					<section data-background="img/cartodb5.png">
+						<p>
+						まずは無料プランで試してみましょう
+						</p>
+					</section>
+				</section>
+
+				<section data-background-iframe="https://waigania13.cartodb.com/viz/d3b7db38-61e5-11e5-adce-0e4fddd5de28/embed_map">
+					<section>
+						<h2>CARTOでデータを処理</h2>
+						<p>
+						shapefileはzipにして、Drag&Dropで追加できます
+						<ul>
+						<li><a href="https://www.e-stat.go.jp/SG1/estat/eStatTopPortal.do" target="new">e-stat</a>から国勢調査</li>
+							<ul>
+							<li>小地域ポリゴン : h22ka01205</li>
+							<li>男女別人口総数及び世帯総数 : tblt000572c01205</li>
+							</ul>
+						<li><a href="http://www.city.muroran.lg.jp/main/org2260/odlib.php" target="new">室蘭市オープンデータ</a>から避難所、AED</li>
+							<ul>
+							<li>AED設置事業所 : aed_20160616</li>
+							<li>避難場所 :  hinanbasyo</li>
+							</ul>
+						</ul>
+						</p>
+					</section>
+					<section>
+						<h2>PostGIS</h2>
+						<p>
+						PostgresSQLの空間拡張<br>
+						CARTOで利用することができます<br>
+						<a href="http://www.postgis.net/" target="new">http://www.postgis.net/</a>
+						</p>
+					</section>
+					<section>
+						<p>
+						<a href="https://waigania13.carto.com/viz/598a13ec-9fda-11e6-86d6-0e233c30368f/map" target="new">DEMO</a>
+						</p>
+					</section>
+					<section>
+						<h2>世帯人口の表示</h2>
+						<p>
+						小地域ポリゴンと統計表を結合<br>
+						結合後、新しいDATASETを作成
+						<pre><code class="sql">
+select
+	h.cartodb_id,
+	h.key_code,
+	cast (replace(t.t000572001, '-', '0') as integer) as t_jinko, 
+	h.the_geom_webmercator
+from
+	h22ka01205 h, tblt000572c01205 t
+where
+	t.key_code = cast(h.key_code as integer)
+						</code></pre>
+						</p>
+					</section>
+                                        <section>
+                                                <h2>行政区画変更</h2>
+                                                <p>
+						小地域ポリゴンと統計表を結合後、<br>
+						行政コードの9桁を使ってマージ
+                                                <pre><code class="sql">
+select 
+	st_union(the_geom_webmercator) as the_geom_webmercator,
+	sum(t_jinko) as t_jinko,
+	substr(key_code, 1, 9) as key_code
+from 
+	h22ka01205_copy
+group by substr(key_code, 1, 9)
+                                                </code></pre>
+                                                </p>
+                                        </section>
+					<section>
+						<h2>AED設置場所から<br>500mのバッファ</h2>
+						<p>
+						<pre><code class="sql">
+select 
+	st_buffer(the_geom_webmercator, 500) as the_geom_webmercator 
+from 
+	aed_20160616
+						</code></pre>
+						</p>
+					</section>
+					<section>
+						<h2>AED設置場所から<br>遠い避難所</h2>
+						<p>
+						<pre><code class="sql">
+select 
+	h.* from hinanbasyo h
+where not exists (
+	select h.* 
+	from  aed_20160616 a
+  	where 
+  	st_within( h.the_geom_webmercator, st_buffer(a.the_geom_webmercator, 500))
+)
+						</code></pre>
+						</p>
+					</section>
+				</section>
+
+				<section data-background="img/mierune1.png">
+					<section>
+						<h2>組み合わせて行きましょう</h2>
+						<p>
+						<img src="img/tools.png" width="60%">
+						</p>
+					</section>
+
+					<section>
+						<h2>もっと地理空間情報したい方は</h2>
+
+						<p>
+						<a href="http://www.osgeo.jp/events/foss4g-2016/foss4g-2016-tokyo/foss4g-2016-tokyo-coreday" target="new">FOSS4G Tokyo 2016</a><br>
+						11/5(土)10:00-<br>
+						東京大学駒場リサーチキャンパス<br>
+						（生産技術研究所内）An棟2階
+						</p>
+						<p>
+						<img src="img/foss4g.png" width="30%">
+						</p>
+					</section>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				overview: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
